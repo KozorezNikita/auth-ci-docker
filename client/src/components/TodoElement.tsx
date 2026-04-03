@@ -55,11 +55,7 @@ const TodoElement = ({ todo }: Props) => {
   });
 
   // 🔹 EDIT
-  const editMutation = useMutation<
-    Todo,
-    Error,
-    { id: number; data: Partial<Todo> }
-  >({
+  const editMutation = useMutation<Todo, Error, {id: number; data: Partial<Todo>}>({
     mutationFn: updateTodo,
 
     onSuccess: (updatedTodo) => {

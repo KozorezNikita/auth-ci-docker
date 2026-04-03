@@ -19,3 +19,13 @@ export const updateTodoSchema = z.object({
 export const idParamSchema = z.object({
   id: z.string().regex(/^\d+$/, 'Invalid id'),
 });
+
+/*
+export const getTodosQuerySchema = z.object({
+  userId: z
+    .string()
+    .regex(/^\d+$/, 'userId must be a number')
+    .transform(val => Number(val))
+    .optional(),
+});
+*/

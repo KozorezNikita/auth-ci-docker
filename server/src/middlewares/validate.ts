@@ -39,3 +39,14 @@ export function validate({ body, params, query }: ValidateProps) {
     next();
   };
 }
+
+
+/*
+if (query) {
+      const result = query.safeParse(req.query);
+      if (!result.success) {
+        return res.status(400).json(result.error.format());
+      }
+      (req as any).validatedQuery = result.data;
+    }
+*/ 

@@ -1,3 +1,4 @@
+import { deleteCompleted } from "@/API/todo"
 import { Action } from "@/context/todo/todo.types"
 import { useTodos } from "@/context/todo/useTodos"
 import { Filter, Todo } from "@/types/todo"
@@ -12,12 +13,10 @@ export const TodoFilter = ({setFilter}: Props) => {
   const queryClient = useQueryClient()
 
   const clearCompletedMutation = useMutation({
-    mutationFn: async () =>  true,
+    mutationFn: deleteCompleted,
 
     onSuccess: () => {
-      queryClient.setQueryData(["todos"], (old: Todo[] = []) =>
-        old.filter(todo => !todo.completed)
-      )
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   })
 

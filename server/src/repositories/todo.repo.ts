@@ -1,4 +1,4 @@
-import { pool } from '../db/pool';
+import { prisma } from '../db/prisma';
 
 export type Todo = {
   id: number;
@@ -7,10 +7,94 @@ export type Todo = {
   userId: number;
 };
 
-export async function getTodos(): Promise<Todo[]> {
-  const result = await pool.query('SELECT * FROM todos ORDER BY id DESC');
+export async function getTodos() : Promise<Todo[]>{
+  return prisma.todo.findMany({include: {user: true}});
+}
+
+export async function getTodoById(id: number) {
+  return prisma.todo.findUnique({
+    where: { id },
+  });
+}
+
+export async function createTodo(title: string, userId: number) {
+  return prisma.todo.create({
+    data: {
+      title,
+      userId,
+    },
+  });
+}
+
+export async function updateTodo(id: number, data: Partial<Todo>) {
+  return prisma.todo.update({
+    where: { id },
+    data,
+  });
+}
+
+export async function deleteTodo(id: number) {
+  await prisma.todo.delete({
+    where: { id },
+  });
+}
+
+
+export async function deleteCompleted () {
+  await prisma.todo.deleteMany({
+    where: {completed: true}
+  });
+}
+
+
+
+
+function mapTodo(row: any) {
+  return {
+    id: row.id,
+    title: row.title,
+    completed: row.completed,
+    userId: row.user_id, // 🔥 головне
+  };
+}
+
+
+/*
+export async function getTodos(userId?: number): Promise<Todo[]> {
+  if (userId) {
+    const result = await pool.query(
+      'SELECT * FROM todos WHERE user_id = $1 ORDER BY id DESC',
+      [userId]
+    );
+
+    return result.rows.map(mapTodo);
+  }
+
+  const result = await pool.query(
+    'SELECT * FROM todos ORDER BY id DESC'
+  );
+
   return result.rows.map(mapTodo);
 }
+
+
+
+export async function getTodos(userId?: number) {
+  return prisma.todo.findMany({
+    where: userId ? { userId } : undefined,
+    orderBy: { id: 'desc' },
+  });
+}
+
+
+
+
+
+
+
+
+
+
 
 export async function getTodoById(id: number): Promise<Todo | null> {
   const result = await pool.query(
@@ -80,3 +164,5 @@ function mapTodo(row: any) {
     userId: row.user_id, // 🔥 головне
   };
 }
+
+*/ 

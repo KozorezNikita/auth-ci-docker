@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import * as repo from '../repositories/todo.repo';
-import { createTodoSchema, idParamSchema, updateTodoSchema } from '../schemas/todo.schema';
 
 
 
@@ -71,6 +70,13 @@ export async function deleteTodo(req: Request, res: Response) {
   res.sendStatus(204);
 }
 
+
+
+export async function deleteCompleted(req: Request, res: Response) {
+  await repo.deleteCompleted()
+  res.sendStatus(204);
+}
+
 /*
 
 функціонал додавання запиту по квері Юзер айді
@@ -106,5 +112,44 @@ export async function getTodos(req: Request, res: Response) {
 
   res.json(todos);
 }
+
+ТОДО РЕПО
+
+export async function getTodos(userId?: number): Promise<Todo[]> {
+  if (userId) {
+    const result = await pool.query(
+      'SELECT * FROM todos WHERE user_id = $1 ORDER BY id DESC',
+      [userId]
+    );
+
+    return result.rows.map(mapTodo);
+  }
+
+  const result = await pool.query(
+    'SELECT * FROM todos ORDER BY id DESC'
+  );
+
+  return result.rows.map(mapTodo);
+}
+
+
+ВАЛІДЕЙТ
+
+
+if (query) {
+      const result = query.safeParse(req.query);
+      if (!result.success) {
+        return res.status(400).json(result.error.format());
+      }
+      (req as any).validatedQuery = result.data;
+    }
+
+
+
+
+
+
+
+
   
 */

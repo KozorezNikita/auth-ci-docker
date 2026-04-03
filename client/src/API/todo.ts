@@ -65,3 +65,8 @@ export async function updateTodo({ id, data,} : { id: number; data: Partial<Todo
 export async function deleteTodo(id: number): Promise<void> {
   await apiClient.delete(`/todos/${id}`);
 }
+
+
+export async function deleteCompleted(): Promise<void> {
+  await apiClient.delete("/todos/completed")
+}

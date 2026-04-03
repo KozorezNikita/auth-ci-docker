@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import todoRoutes from './routes/todo.routes';
+import userRoutes from './routes/user.routes';
 import { errorHandler } from './middlewares/errorHandler';
 
 
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use(errorHandler);
 
 
-
+app.use('/users', userRoutes)
 app.use('/todos', todoRoutes);
 
 

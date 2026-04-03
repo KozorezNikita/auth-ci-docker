@@ -30,6 +30,11 @@ router.put(
 );
 
 router.delete(
+  '/completed',
+  asyncHandler(controller.deleteCompleted)
+);
+
+router.delete(
   '/:id',
   validate({ params: idParamSchema }),
   asyncHandler(controller.deleteTodo)
@@ -50,4 +55,11 @@ router.put('/:id', controller.updateTodo);
 router.delete('/:id', controller.deleteTodo);
 
 export default router;
+
+
+router.get(
+  '/',
+  validate({ query: getTodosQuerySchema }),
+  controller.getTodos
+);
 */ 
