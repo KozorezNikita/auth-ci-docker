@@ -20,6 +20,15 @@ export const idParamSchema = z.object({
   id: z.string().regex(/^\d+$/, 'Invalid id'),
 });
 
+
+
+export const getTodosQuerySchema = z.object({
+  page: z.string().optional(),
+  limit: z.string().optional(),
+  completed: z.string().optional(),
+  search: z.string().optional(),
+});
+
 /*
 export const getTodosQuerySchema = z.object({
   userId: z

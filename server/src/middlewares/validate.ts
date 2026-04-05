@@ -33,7 +33,7 @@ export function validate({ body, params, query }: ValidateProps) {
       if (!result.success) {
         return res.status(400).json(result.error.format());
       }
-      (req as any).query = result.data;
+      (req as any).validatedQuery = result.data;
     }
 
     next();

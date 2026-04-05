@@ -1,15 +1,18 @@
 import { deleteCompleted } from "@/API/todo"
 import { Action } from "@/context/todo/todo.types"
-import { useTodos } from "@/context/todo/useTodos"
 import { Filter, Todo } from "@/types/todo"
 import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useSearchParams } from "next/navigation"
 
 
 type Props = {
-    setFilter: (filter: Filter) => void
+    updateParams: (params: Record<string, string>) => void,
+    search: string,
+    setSearch: React.Dispatch<React.SetStateAction<string>>
+
 }
 
-export const TodoFilter = ({setFilter}: Props) => {
+export const TodoFilter = ({updateParams, search, setSearch}: Props) => {
   const queryClient = useQueryClient()
 
   const clearCompletedMutation = useMutation({
@@ -22,9 +25,10 @@ export const TodoFilter = ({setFilter}: Props) => {
 
   return (
     <>
-      <button onClick={() => setFilter("all")}>All</button>
-      <button onClick={() => setFilter("active")}>Active</button>
-      <button onClick={() => setFilter("completed")}>Completed</button>
+      <input type="text" value={search} onChange={(e) => {setSearch(e.target.value); updateParams({search: e.target.value, page: "1"})}}/>
+      <button onClick={() => updateParams({completed: ""})}>All</button>
+      <button onClick={() => updateParams({completed: "false"})}>Active</button>
+      <button onClick={() => updateParams({completed: "true"})}>Completed</button>
       <button onClick={() => clearCompletedMutation.mutate()}>Clear completed</button>
     </>
   )

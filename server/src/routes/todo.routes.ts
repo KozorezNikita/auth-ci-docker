@@ -1,12 +1,18 @@
 import { Router } from 'express';
 import * as controller from '../controllers/todo.controller';
 import { validate } from '../middlewares/validate';
-import { createTodoSchema, updateTodoSchema, idParamSchema} from '../schemas/todo.schema';
+import { createTodoSchema, updateTodoSchema, idParamSchema, getTodosQuerySchema} from '../schemas/todo.schema';
 import { asyncHandler } from '../utils/asyncHandler';
 
 const router = Router();
 
-router.get('/', asyncHandler(controller.getTodos));
+/*router.get('/', asyncHandler(controller.getTodos));*/
+
+router.get(
+  "/",
+  validate({ query: getTodosQuerySchema }),
+  asyncHandler(controller.getTodos)
+);
 
 router.get(
   '/:id',

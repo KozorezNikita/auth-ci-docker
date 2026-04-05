@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../db/prisma';
 
 export type Todo = {
@@ -7,9 +8,70 @@ export type Todo = {
   userId: number;
 };
 
+type GetTodosOptions = {
+  page?: number;
+  limit?: number;
+  completed?: boolean;
+  search?: string;
+};
+
+
+
+
+
+
+export async function getTodos(options: GetTodosOptions) {
+  const {
+    page = 1,
+    limit = 10,
+    completed,
+    search,
+  } = options;
+
+  const skip = (page - 1) * limit;
+
+  const where = {
+    ...(completed !== undefined && { completed }),
+    ...(search && {
+      title: {
+        contains: search,
+        mode: Prisma.QueryMode.insensitive,
+      },
+    }),
+  };
+
+  const [todos, total] = await prisma.$transaction([
+    prisma.todo.findMany({
+      where,
+      include: { user: true },
+      take: limit,
+      skip,
+      orderBy: { id: "desc" },
+    }),
+    prisma.todo.count({ where }),
+  ]);
+
+  return {
+    data: todos,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
+}
+
+
+
+
+
+
+/*
 export async function getTodos() : Promise<Todo[]>{
   return prisma.todo.findMany({include: {user: true}});
 }
+*/
+
+
 
 export async function getTodoById(id: number) {
   return prisma.todo.findUnique({

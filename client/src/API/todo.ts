@@ -1,19 +1,21 @@
+import { GetTodosParams } from "@/hooks/useTodos";
 import { AllTodosSchema, TodoSchema } from "../types/todo.schema";
 import { apiClient } from "./client";
 import { TodoId, Todo, NewTodo } from "@/types/todo";
 
-// 🔹 GET ALL
-export async function getTodos(): Promise<Todo[]> {
-  const response = await apiClient.get(`/todos`);
+type PaginatedTodos = {
+  data: Todo[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
 
-  const result = AllTodosSchema.safeParse(response.data);
-
-  if (!result.success) {
-    console.error(result.error);
-    throw new Error("Invalid API response");
-  }
-
-  return result.data;
+export async function getTodos(
+  params: GetTodosParams
+): Promise<PaginatedTodos> {
+  const res = await apiClient.get("/todos", { params });
+  return res.data;
 }
 
 // 🔹 GET ONE

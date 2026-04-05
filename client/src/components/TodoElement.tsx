@@ -9,61 +9,47 @@ type Props = {
 };
 
 const TodoElement = ({ todo }: Props) => {
-  console.log("render", todo.id);
-
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(todo.title);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
 
-  
-
-  // 🔹 фокус при редагуванні
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-    }
+    if (isEditing) inputRef.current?.focus();
   }, [isEditing]);
 
+  // ⚠️ той самий ключ, що в useTodos
+  const queryKey = ['todos'];
+
   // 🔹 DELETE
-  const deleteMutation = useMutation<void, Error, number>({
+  const deleteMutation = useMutation({
     mutationFn: deleteTodo,
 
-    onSuccess: (_, id) => {
-      queryClient.setQueryData(['todos'], (old: Todo[] = []) =>
-        old.filter(todo => todo.id !== id)
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
     },
   });
 
   // 🔹 TOGGLE
-  const toggleMutation = useMutation<Todo, Error, number>({
-    mutationFn: (id) =>
+  const toggleMutation = useMutation({
+    mutationFn: (id: number) =>
       updateTodo({
         id,
         data: { completed: !todo.completed },
       }),
 
-    onSuccess: (updatedTodo) => {
-      queryClient.setQueryData(['todos'], (old: Todo[] = []) =>
-        old.map(t =>
-          t.id === updatedTodo.id ? updatedTodo : t
-        )
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
     },
   });
 
   // 🔹 EDIT
-  const editMutation = useMutation<Todo, Error, {id: number; data: Partial<Todo>}>({
+  const editMutation = useMutation({
     mutationFn: updateTodo,
 
-    onSuccess: (updatedTodo) => {
-      queryClient.setQueryData(['todos'], (old: Todo[] = []) =>
-        old.map(todo =>
-          todo.id === updatedTodo.id ? updatedTodo : todo
-        )
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
     },
   });
 
@@ -76,17 +62,6 @@ const TodoElement = ({ todo }: Props) => {
     });
 
     setIsEditing(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSave();
-    }
-
-    if (e.key === "Escape") {
-      setValue(todo.title);
-      setIsEditing(false);
-    }
   };
 
   return (
@@ -103,17 +78,24 @@ const TodoElement = ({ todo }: Props) => {
             ref={inputRef}
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleSave();
+              if (e.key === 'Escape') {
+                setValue(todo.title);
+                setIsEditing(false);
+              }
+            }}
           />
           <button onClick={handleSave}>Save</button>
         </>
       ) : (
         <>
           <Link href={`/tasks/${todo.id}`}>
-            <span style={{ cursor: "pointer" }}>
+            <span style={{ cursor: 'pointer' }}>
               {todo.title}
             </span>
           </Link>
+
           <button onClick={() => setIsEditing(true)}>
             Edit
           </button>

@@ -5,12 +5,29 @@ import * as repo from '../repositories/todo.repo';
 
 
 
+export async function getTodos(req: Request, res: Response) {
+  const { page, limit, completed, search } = req.query;
 
+  const todos = await repo.getTodos({
+    page: page ? Number(page) : undefined,
+    limit: limit ? Number(limit) : undefined,
+    completed: completed === "true" ? true :
+           completed === "false" ? false :
+           undefined,
+    search: search as string | undefined,
+  });
+
+  res.json(todos);
+}
+
+
+
+/*
 export async function getTodos(req: Request, res: Response) {
   const todos = await repo.getTodos();
   res.json(todos);
 }
-
+*/
 
 
 

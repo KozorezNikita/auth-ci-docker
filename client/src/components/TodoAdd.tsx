@@ -1,5 +1,4 @@
 import { createTodo } from "@/API/todo";
-import { useTodos } from "@/context/todo/useTodos";
 import { NewTodo, Todo } from "@/types/todo";
 import { NewTodoSchema } from "@/types/todo.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
