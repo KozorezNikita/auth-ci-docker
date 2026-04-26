@@ -51,6 +51,7 @@ export async function createTodo(data: NewTodo): Promise<Todo> {
 
 export async function updateTodo({ id, data,} : { id: number; data: Partial<Todo>; }): Promise<Todo> {
   const response = await apiClient.put(`/todos/${id}`, data);
+  
 
   const result = TodoSchema.safeParse(response.data);
 
@@ -60,6 +61,13 @@ export async function updateTodo({ id, data,} : { id: number; data: Partial<Todo
   }
 
   return result.data;
+  /*await apiClient.put(`/todos/${id}`, data);
+  return {
+    id,
+    title: data.title ?? "",
+    completed: data.completed ?? false,
+    userId: 0,
+  };*/
 }
 
 

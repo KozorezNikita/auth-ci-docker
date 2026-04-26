@@ -9,7 +9,6 @@ import { useState } from "react";
 export const TodoAdd = () => {
   
   const [inputValue, setInputValue] = useState<string>("");
-  const [userValue, setUserValue] = useState<number>(0);
 
   const queryClient = useQueryClient()
 
@@ -22,8 +21,7 @@ export const TodoAdd = () => {
 
   function handleAdd() {
     const result = NewTodoSchema.safeParse({
-      title: inputValue,
-      userId: userValue,
+      title: inputValue
     });
 
     if (!result.success) {
@@ -34,7 +32,6 @@ export const TodoAdd = () => {
     createMutation.mutate(result.data);
 
     setInputValue("");
-    setUserValue(0);
 }
 
   
@@ -47,12 +44,6 @@ export const TodoAdd = () => {
             value={inputValue}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setInputValue(e.target.value)
-            }
-        />
-        <input
-            value={userValue}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setUserValue(Number(e.target.value))
             }
         />
         <button onClick={handleAdd}>Add a todo</button>

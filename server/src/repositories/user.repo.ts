@@ -9,21 +9,24 @@ export type NewUser = {
   name: string;
 };
 
-
-
-export async function createUser(name: string) {
-  return prisma.user.create({
-    data: { name },
-  });
-}
-
 export async function getUsers() {
-  return prisma.user.findMany();
+  return prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true
+    }
+  });
 }
 
 export async function getUserById(id: number) {
   return prisma.user.findUnique({
     where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true
+    }
   });
 }
 

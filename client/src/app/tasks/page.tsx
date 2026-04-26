@@ -11,6 +11,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { useTodos } from '@/hooks/useTodos';
 import { Filter, NewTodo, Todo } from '@/types/todo';
 import { NewTodoSchema } from '@/types/todo.schema';
+import { getToken } from '@/utils/auth';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, useEffect, useMemo, useCallback} from 'react';
@@ -24,6 +25,15 @@ function TodoPage() {
   //const [filter, setFilter] = useState<Filter>("all")
   const searchParams = useSearchParams();
   const router = useRouter();
+
+
+  useEffect(() => {
+    const token = getToken();
+
+    if (!token) {
+      router.push("/login");
+    }
+  }, []);
 
 
   const [search, setSearch] = useState("")

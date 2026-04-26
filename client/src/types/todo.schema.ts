@@ -11,8 +11,7 @@ export const AllTodosSchema = z.array(TodoSchema);
 
 
 export const NewTodoSchema = z.object({
-    title: z.string().min(1, "Title is required"),
-    userId: z.number().min(1, "Must be > than 0")
+    title: z.string().min(1, "Title is required")
 });
 
 export const UpdateTodoSchema = TodoSchema.partial();

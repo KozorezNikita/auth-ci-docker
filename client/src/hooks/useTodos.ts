@@ -7,6 +7,7 @@ export type GetTodosParams = {
   limit?: number;
   completed?: boolean;
   search?: string;
+  userId?: number; 
 };
 
 export function useTodos(params: GetTodosParams) {

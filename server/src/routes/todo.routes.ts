@@ -3,10 +3,13 @@ import * as controller from '../controllers/todo.controller';
 import { validate } from '../middlewares/validate';
 import { createTodoSchema, updateTodoSchema, idParamSchema, getTodosQuerySchema} from '../schemas/todo.schema';
 import { asyncHandler } from '../utils/asyncHandler';
+import { auth } from '../middlewares/auth';
 
 const router = Router();
 
 /*router.get('/', asyncHandler(controller.getTodos));*/
+
+router.use(auth);
 
 router.get(
   "/",

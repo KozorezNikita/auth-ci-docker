@@ -34,6 +34,21 @@ export default function HomePage() {
         >
           Go to About
         </Link>
+
+        <Link
+          href="/login"
+          style={{
+            padding: '0.5rem 1rem',
+            background: 'red',
+            color: 'white',
+            borderRadius: '4px',
+            textDecoration: 'none',
+          }}
+        >
+          Login
+        </Link>
+
+
       </div>
     </div>
   )

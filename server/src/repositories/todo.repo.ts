@@ -13,6 +13,7 @@ type GetTodosOptions = {
   limit?: number;
   completed?: boolean;
   search?: string;
+  userId?: number;
 };
 
 
@@ -26,11 +27,13 @@ export async function getTodos(options: GetTodosOptions) {
     limit = 10,
     completed,
     search,
+    userId
   } = options;
 
   const skip = (page - 1) * limit;
 
   const where = {
+    userId,
     ...(completed !== undefined && { completed }),
     ...(search && {
       title: {
@@ -88,37 +91,32 @@ export async function createTodo(title: string, userId: number) {
   });
 }
 
-export async function updateTodo(id: number, data: Partial<Todo>) {
-  return prisma.todo.update({
-    where: { id },
+export async function updateTodo(id: number, userId: number, data: any) {
+  await prisma.todo.updateMany({
+    where: { id, userId },
     data,
   });
-}
 
-export async function deleteTodo(id: number) {
-  await prisma.todo.delete({
+  return prisma.todo.findUnique({
     where: { id },
   });
 }
 
-
-export async function deleteCompleted () {
-  await prisma.todo.deleteMany({
-    where: {completed: true}
+export async function deleteTodo(id: number, userId: number) {
+  return prisma.todo.deleteMany({
+    where: { id, userId },
   });
 }
 
-
-
-
-function mapTodo(row: any) {
-  return {
-    id: row.id,
-    title: row.title,
-    completed: row.completed,
-    userId: row.user_id, // 🔥 головне
-  };
+export async function deleteCompleted(userId: number) {
+  return prisma.todo.deleteMany({
+    where: {
+      completed: true,
+      userId,
+    },
+  });
 }
+
 
 
 /*
