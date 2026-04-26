@@ -14,7 +14,7 @@ describe("getTodoById", () => {
     const result = await getTodoById(1, 1);
 
     expect(result).toEqual({
-      id: 1,
+      id: 12,
       title: "Test",
       userId: 1,
     });
@@ -22,7 +22,7 @@ describe("getTodoById", () => {
 
   it("кидає помилку якщо todo не належить юзеру", async () => {
     (repo.getTodoById as jest.Mock).mockResolvedValue({
-      id: 12,
+      id: 1,
       title: "Test",
       userId: 2,
     });
