@@ -22,7 +22,7 @@ describe("getTodoById", () => {
 
   it("кидає помилку якщо todo не належить юзеру", async () => {
     (repo.getTodoById as jest.Mock).mockResolvedValue({
-      id: 1,
+      id: 12,
       title: "Test",
       userId: 2,
     });
