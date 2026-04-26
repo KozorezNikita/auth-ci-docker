@@ -14,7 +14,7 @@ describe("getTodoById", () => {
     const result = await getTodoById(1, 1);
 
     expect(result).toEqual({
-      id: 12,
+      id: 1,
       title: "Test",
       userId: 1,
     });
