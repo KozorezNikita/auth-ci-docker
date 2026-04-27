@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:17
+    container_name: todo-db
+
+    restart: always
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: lacazette10!
+      POSTGRES_DB: auth_todo
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  server:
+    build: ./server
+    container_name: todo-server
+
+    depends_on:
+      - db
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      DATABASE_URL: postgresql://postgres:lacazette10!@db:5432/auth_todo
+      JWT_SECRET: secret
+
+volumes:
+  postgres_data:
