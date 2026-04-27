@@ -1,20 +1,16 @@
 'use client'
 
-import { getTodos } from '@/API/todo';
 import List from '@/components/List';
 import { Pagination } from '@/components/Pagination';
 import { TodoAdd } from '@/components/TodoAdd';
 import TodoElement from '@/components/TodoElement';
 import { TodoFilter } from '@/components/TodoFilter';
-import { selectFilteredTodos } from '@/context/todo/todo.selectors';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useTodos } from '@/hooks/useTodos';
-import { Filter, NewTodo, Todo } from '@/types/todo';
-import { NewTodoSchema } from '@/types/todo.schema';
+import { Todo } from '@/types/todo';
 import { getToken } from '@/utils/auth';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState, useEffect, useMemo, useCallback} from 'react';
+import  { useState, useEffect, useCallback} from 'react';
 
 
 function TodoPage() {

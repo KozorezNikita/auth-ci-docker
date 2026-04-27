@@ -18,7 +18,7 @@ export default function LoginPage() {
       setToken(data.token);
 
       router.push("/tasks");
-    } catch (e) {
+    } catch(e) {
       alert("Login failed");
     }
   };

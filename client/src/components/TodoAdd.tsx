@@ -1,8 +1,7 @@
 import { createTodo } from "@/API/todo";
-import { NewTodo, Todo } from "@/types/todo";
 import { NewTodoSchema } from "@/types/todo.schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import React, { useState } from "react";
 
 
 

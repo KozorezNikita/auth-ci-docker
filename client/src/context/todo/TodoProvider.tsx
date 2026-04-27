@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { Todo } from "../../types/todo";
 import { initialState, todoReducer } from "./todo.reducer";

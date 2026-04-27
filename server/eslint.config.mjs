@@ -4,30 +4,27 @@ import tsParser from "@typescript-eslint/parser";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 
 export default [
-  // 🚫 Ігноруємо шум
+  // 🚫 ignore build output
   {
     ignores: [
-      "**/node_modules/**",
-      "**/.next/**",
-      "**/out/**",
-      "**/dist/**",
-      "**/build/**"
+      "node_modules",
+      "dist",
+      "build"
     ],
   },
 
-  // ✅ базові правила
+  // ✅ базові JS правила
   js.configs.recommended,
 
   {
-    files: ["**/*.{ts,tsx,js,jsx}"],
+    files: ["**/*.{ts,js}"],
 
     languageOptions: {
       parser: tsParser,
       ecmaVersion: 2022,
       sourceType: "module",
       globals: {
-        ...globals.browser,
-        ...globals.node,
+        ...globals.node, // 👈 важливо для backend
       },
     },
 
@@ -36,7 +33,10 @@ export default [
     },
 
     rules: {
-      "no-console": "warn",
+      // базові
+      "no-console": "off", // backend часто використовує console
+
+      // TypeScript
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/no-explicit-any": "warn",
     },

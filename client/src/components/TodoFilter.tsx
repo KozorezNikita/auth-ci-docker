@@ -1,8 +1,6 @@
 import { deleteCompleted } from "@/API/todo"
-import { Action } from "@/context/todo/todo.types"
-import { Filter, Todo } from "@/types/todo"
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query"
-import { useSearchParams } from "next/navigation"
+import {  useMutation, useQueryClient } from "@tanstack/react-query"
+import React from "react"
 
 
 type Props = {

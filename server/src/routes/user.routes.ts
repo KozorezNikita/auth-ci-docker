@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as controller from "../controllers/user.controller";
 import { validate } from "../middlewares/validate";
-import { createUserSchema, idParamSchema } from "../schemas/user.schema";
+import { idParamSchema } from "../schemas/user.schema";
 import { asyncHandler } from "../utils/asyncHandler";
 import { auth } from "../middlewares/auth";
 

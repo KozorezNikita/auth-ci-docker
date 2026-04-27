@@ -1,5 +1,5 @@
 import { GetTodosParams } from "@/hooks/useTodos";
-import { AllTodosSchema, TodoSchema } from "../types/todo.schema";
+import { TodoSchema } from "../types/todo.schema";
 import { apiClient } from "./client";
 import { TodoId, Todo, NewTodo } from "@/types/todo";
 
